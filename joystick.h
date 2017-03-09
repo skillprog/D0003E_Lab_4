@@ -2,6 +2,7 @@
 
 #define _JOYSTICK_H
 
+#include "GUI.h"
 
 typedef struct{
 	Object super;

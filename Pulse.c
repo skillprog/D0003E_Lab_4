@@ -15,7 +15,7 @@ void pulseDec(Pulse *self){
 void pulseStopStart(Pulse *self){
 	if(self->freq != 0){
 		self->prevFreq = self->freq;
-		self->freq = 0;
+		self->freq = 0; 
 	}else{
 		self->freq = self->prevFreq;
 		self->prevFreq = 0;

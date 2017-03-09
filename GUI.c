@@ -1,3 +1,4 @@
+#include "GUI.h"
 #include <asf.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -89,13 +90,54 @@ void writeChar(char ch, int pos){
 	
 }
 
-void printAt(long num, int pos) {
+void printAt(g *self, int pulseRunning) {
 	
-	int pp = pos;
+	int num;
+	int pp;	
 	
-	writeChar( (num % 100) / 10 + '0', pp);
-	pp++;
-	writeChar( num % 10 + '0', pp);
+	//Prints at position 0 and calculates from the rightmost digit.
+	if(pulseRunning == 0)
+	{
+		num = self->p1->freq;
+		pp = 0;
+		num = (((num % 100) / 10));
+		writeChar(self, pp, num);
+		pp = 1;
+		num = ((self->p1->freq % 10));
+		writeChar(self, pp, num);
+	}
+	else
+	{	//Prints at position 4.
+		num = self->p2->freq;
+		pp = 3;
+		num = (((num % 100) / 10));
+		writeChar(self, pp, num);
+		pp = 4;
+		num = ((self->p2->freq % 10));
+		writeChar(self, pp, num);
+	}
+
 }
 
+//show which pulsegen is running.
+void switchGen(g *self, int x){
+	
+	if(self->pulseActive == 1){
+		LCDDR18 = 0x1;
+		LCDDR17 = 0x0;
+		self->pulseActive = 0;
+	}
+	else if(self->pulseActive == 0){
+		LCDDR18 = 0x0;
+		LCDDR17 = 0x1;
+		self->pulseActive = 1;
+	}
+	
+}
+
+void updateGui(g *self, int x){
+	
+	printAt(self, 0);
+	printAt(self, 1);
+}
 
